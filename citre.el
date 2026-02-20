@@ -519,9 +519,6 @@ Citre")
 
 ;;;;; Internals
 
-(defvar-local citre-imenu--create-index-function-orig nil
-  "Original value of `imenu-create-index-function' in buffer.")
-
 (defun citre-imenu--classify-tags (tags)
   "Classify TAGS based on the `ext-kind-full' field.
 This creates an alist, its key is `kind' field value, and value
@@ -600,16 +597,14 @@ The returned value is a valid element of the return value of
       (add-hook 'completion-at-point-functions
                 #'citre-completion-at-point nil t))
     (when citre-enable-imenu-integration
-      (setq citre-imenu--create-index-function-orig
-            imenu-create-index-function)
-      (setq imenu-create-index-function #'citre-imenu-create-index-function)))
+      (add-function :before-until (local 'imenu-create-index-function)
+                    #'citre-imenu-create-index-function)))
    (t
     (remove-hook 'xref-backend-functions #'citre-xref-backend t)
     (remove-hook 'completion-at-point-functions
                  #'citre-completion-at-point t)
-    (when citre-enable-imenu-integration
-      (setq imenu-create-index-function
-            citre-imenu--create-index-function-orig)))))
+    (remove-function (local 'imenu-create-index-function)
+                     #'citre-imenu-create-index-function))))
 
 ;;;###autoload
 (defun citre-auto-enable-citre-mode ()
