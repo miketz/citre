@@ -1,4 +1,20 @@
-### 0.4.1 (released 2024.05-24)
+### 0.4.2 (released 2026-02-20)
+
+- Improvements
+
+  - New command `citre-global-update-file` to update a selected global
+    database.
+  - Treat operators as symbols so we can do things like finding its
+    definitions.
+  - New user option `citre-auto-enable-citre-mode-backends-for-remote` to
+    disable auto-enabling `citre-mode` for remote files, which may be slow.
+  - Other minor improvements.
+
+- Fixes
+
+  - Various bugfixes.
+
+### 0.4.1 (released 2024-05-24)
 
 - Improvements
 
