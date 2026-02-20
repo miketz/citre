@@ -82,6 +82,15 @@ If one of these backends are usable in current file,
   :type '(repeat symbol)
   :group 'citre)
 
+(defcustom citre-auto-enable-citre-mode-backends-for-remote '(tags global)
+  "Backends for which `citre-auto-enable-citre-mode' works in remote files.
+Some backends may search for certain files to detect if it's
+usable, which may be slow on a remote host.  If
+`citre-auto-enable-citre-mode' makes opening remote files slow,
+remove problematic backends or set this to nil."
+  :type '(repeat symbol)
+  :group 'citre)
+
 (defcustom citre-auto-enable-citre-mode-modes 'all
   "The major modes where `citre-auto-enable-citre-mode' works.
 If you require `citre-config' in your configuration, then these
@@ -613,8 +622,12 @@ Put this in `find-file-hook' to automatically enable `citre-mode'
 when opening a file."
   (when (or (eq citre-auto-enable-citre-mode-modes 'all)
             (apply #'derived-mode-p citre-auto-enable-citre-mode-modes))
-    (let ((timeout citre-auto-enable-citre-mode-backend-test-timeout))
-      (cl-dolist (backend citre-auto-enable-citre-mode-backends)
+    (let ((timeout citre-auto-enable-citre-mode-backend-test-timeout)
+          (backends (if (file-remote-p
+                         (or (buffer-file-name) default-directory))
+                        citre-auto-enable-citre-mode-backends-for-remote
+                      citre-auto-enable-citre-mode-backends)))
+      (cl-dolist (backend backends)
         (when (if timeout
                   (with-timeout (timeout) (citre-backend-usable-p backend))
                 (citre-backend-usable-p backend))

@@ -244,7 +244,9 @@ to your own need.
    citre-edit-ctags-options-manually nil
    ;; If you only want the auto enabling citre-mode behavior to work for
    ;; certain modes (like `prog-mode'), set it like this.
-   citre-auto-enable-citre-mode-modes '(prog-mode)))
+   citre-auto-enable-citre-mode-modes '(prog-mode))
+   ;; If Citre makes opening remote files slow, set this to nil.
+   citre-auto-enable-citre-mode-backends-for-remote nil)
 ```
 
 These user options are for customizing enabled backends:
