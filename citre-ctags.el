@@ -178,7 +178,15 @@ PROMPT is the prompt shown to the user."
   (completing-read-multiple prompt (citre--ctags-language-list)))
 
 (defun citre--encode-path-to-filename (path)
-  "Encode local absolute PATH into a file name."
+  "Encode local absolute PATH into a file name.
+If PATH is a directory, the caller may want to ensure there's an
+ending slash, as:
+
+- A directory is also a file.
+- Its filename is its directory name without the final slash.
+- So the filename and directory name are encoded to different results.
+
+See also `directory-file-name'."
   (let ((segs (split-string
                ;; expand the "~" so Unix paths will start with a slash. This
                ;; also collapses consecutive slashes.
@@ -231,7 +239,7 @@ This also works on remote machine."
 DIR is absolute.  The full path of the tags file is returned."
   (expand-file-name
    (concat (citre--encode-path-to-filename
-            (file-local-name (file-truename dir)))
+            (file-name-as-directory (file-local-name (file-truename dir))))
            ".tags")
    (citre--tags-global-cache-dir)))
 
