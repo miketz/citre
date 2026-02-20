@@ -600,15 +600,7 @@ When SYNC is non-nil, update the tags file synchronously."
 ;;;###autoload
 (defun citre-edit-tags-file-recipe (&optional tagsfile)
   "Edit the recipe of TAGSFILE.
-When called interactively, ask the user to select a tags file.
-
-When CMD-PTAG is non-nil, don't use a command-editing buffer, but
-write it to CITRE_CMD ptag directly.
-
-When CWD is non-nil, don't ask the user to pick a root dir to run Ctags.
-
-When NOCONFIRM is non-nil, don't ask the user whether to update
-the tags file now (update it directly instead)."
+When called interactively, ask the user to select a tags file."
   (interactive)
   (let ((tagsfile (or tagsfile (citre-read-tags-file-name))))
     (citre--ctags-edit-recipe tagsfile)))
